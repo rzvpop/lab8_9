@@ -21,6 +21,8 @@ public:
     void PrintByMonthUser();
     void DeleteFromUserList();
     void SeeUserList();
+    void SaveListToFile();
+    void DisplayList();
 
     void UiAdmin();
     void UIUser();

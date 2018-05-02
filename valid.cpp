@@ -101,7 +101,7 @@ int Valid::ValidateDate(std::string str, int &_day, int &_month, int &_year, int
     return 1;
 }
 
-std::string ValidatorException::GetMessage() const
+std::string ValidatorException::GetMsg() const
 {
     return message;
 }

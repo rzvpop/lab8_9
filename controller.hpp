@@ -3,6 +3,8 @@
 
 #include "repository.hpp"
 #include "event.hpp"
+#include "eventlistCSV.hpp"
+#include "eventlistHTML.hpp"
 
 class Controller
 {
@@ -22,10 +24,14 @@ public:
     std::vector<Event>::iterator GetElemOnPosRepo(int);
     int GetUserListSize();
     std::string GetUserListElemOnPosStr(int);
+    void SetEventList(EventList*);
+    void SaveListToFile();
+    void DisplayList();
 
 private:
     Repository<Event> repo;
     Repository<Event> user_list;
+    EventList* el;
 };
 
 #endif //LAB5_6_CONTROLLER_HPP

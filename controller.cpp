@@ -83,3 +83,19 @@ std::string Controller::GetUserListElemOnPosStr(int i)
     auto e = user_list.GetEventOnPos(i);
     return e->GetStr();
 }
+
+void Controller::SaveListToFile()
+{
+    el->SetVector(user_list.GetVector());
+    el->WriteToFile();
+}
+
+void Controller::DisplayList()
+{
+    el->Display();
+}
+
+void Controller::SetEventList(EventList *_el)
+{
+    el = _el;
+}

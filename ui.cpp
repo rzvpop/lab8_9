@@ -107,7 +107,7 @@ void UI::PrintByMonthUser()
         if(month == ctrl.GetMonthOnPos(i))
         {
             std::cout << '-' << ctrl.GetRepoElemOnPosStr(i) << '\n';
-            ctrl.AccesEventPage(i);
+            //ctrl.AccesEventPage(i);
 
             std::cout << "\nContinue(1), add to your list(2) or stop(0)? ";
             std::cin >> cont;
@@ -145,6 +145,8 @@ void UI::SeeUserList()
 
 void UI::StartUI()
 {
+    ReadFromFile("events.txt");
+
     int mode = 1;
     std::cout << "Admin or user?(1 or 2)\n";
     std::cin >> mode;
@@ -176,6 +178,8 @@ void UI::HelpUser()
               "1.See by month\n" <<
               "2.Delete from my list\n" <<
               "3.See my list\n" <<
+              "4.Add to file\n" <<
+              "5.Display lsit\n" <<
               "----------------------\n";
 }
 
@@ -184,8 +188,6 @@ void UI::UiAdmin()
 {
     HelpAdm();
     std::cout << '\n';
-
-    ReadFromFile("events.txt");
 
     while(1)
     {
@@ -208,7 +210,11 @@ void UI::UiAdmin()
             else
                 std::cout << "Invalid command!\n";
         }
-        catch(const RepoException ex)
+        catch(const RepoException &ex)
+        {
+            std::cout << ex.GetMsg() << '\n';
+        }
+        catch(const ValidatorException &ex)
         {
             std::cout << ex.GetMsg() << '\n';
         }
@@ -219,6 +225,10 @@ void UI::UIUser()
 {
     HelpUser();
     std::cout << '\n';
+
+    EventList *el = new EventListHTML;
+    el->SetFilename("EventList.html");
+    ctrl.SetEventList(el);
 
     while(1)
     {
@@ -234,10 +244,15 @@ void UI::UIUser()
             DeleteFromUserList();
         else if(comm == 3)
             SeeUserList();
+        else if(comm == 4)
+            SaveListToFile();
+        else if(comm == 5)
+            DisplayList();
         else
             std::cout << "Invalid command!";
     }
 
+    delete el;
 }
 
 void UI::ReadFromFile(std::string str)
@@ -254,4 +269,14 @@ void UI::ReadFromFile(std::string str)
     }
 
     fin.close();
+}
+
+void UI::SaveListToFile()
+{
+    ctrl.SaveListToFile();
+}
+
+void UI::DisplayList()
+{
+    ctrl.DisplayList();
 }

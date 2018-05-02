@@ -16,7 +16,7 @@ class ValidatorException
 {
 public:
     explicit ValidatorException(std::string _msg) : message(std::move(_msg)) {}
-    std::string GetMessage() const;
+    std::string GetMsg() const;
 
 private:
     std::string message;
