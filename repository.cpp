@@ -66,9 +66,7 @@ std::string Repository<T>::GetStrOnPos(int pos) const
         return elems[pos].GetStr();
     }
     else
-        throw RepoException{ "Element doesn't exist!" };
-
-    return "";
+        throw RepoException{ "Position doesn't exist!" };
 }
 
 template<typename T>

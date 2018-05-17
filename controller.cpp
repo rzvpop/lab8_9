@@ -1,6 +1,5 @@
 #include "controller.hpp"
-
-#include <utility>
+#include <fstream>
 
 Repository<Event> Controller::GetRepo()
 {
@@ -98,4 +97,16 @@ void Controller::DisplayList()
 void Controller::SetEventList(EventList *_el)
 {
     el = _el;
+}
+
+void Controller::WriteInFile(std::string str)
+{
+    std::ofstream fout(str);
+
+    //std::vector<Event> v = static_cast<std::vector<Event> &&>(repo.GetVector());
+
+    for(int i = 0; i < repo.GetNrElems(); ++i)
+        fout << repo.GetStrOnPos(i) << '\n';
+
+    fout.close();
 }

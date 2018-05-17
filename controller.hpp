@@ -24,6 +24,7 @@ public:
     std::vector<Event>::iterator GetElemOnPosRepo(int);
     int GetUserListSize();
     std::string GetUserListElemOnPosStr(int);
+    void WriteInFile(std::string str);
     void SetEventList(EventList*);
     void SaveListToFile();
     void DisplayList();

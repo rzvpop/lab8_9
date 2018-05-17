@@ -1,5 +1,4 @@
 #include "eventlist.hpp"
-
 #include <utility>
 
 void EventList::SetVector(std::vector<Event> &v)

@@ -1,7 +1,6 @@
 #include "eventlistCSV.hpp"
 
 #include <fstream>
-#include <Windows.h>
 
 void EventListCSV::WriteToFile()
 {
@@ -21,7 +20,7 @@ void EventListCSV::Display()
     std::string aux = "\"" + filename + "\"";
 
     //ShellExecute(NULL, NULL, "C:\\Program Files (x86)\\Microsoft Office\\Office14\\excel.exe", aux.c_str(), NULL, SW_SHOWMAXIMIZED);
-    ShellExecute(NULL, NULL, "notepad.exe", aux.c_str(), NULL, SW_SHOWMAXIMIZED);
+    //ShellExecute(NULL, NULL, "notepad.exe", aux.c_str(), NULL, SW_SHOWMAXIMIZED);
 }
 
 std::string FileException::GetMsg() const

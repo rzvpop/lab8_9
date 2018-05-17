@@ -107,7 +107,7 @@ void UI::PrintByMonthUser()
         if(month == ctrl.GetMonthOnPos(i))
         {
             std::cout << '-' << ctrl.GetRepoElemOnPosStr(i) << '\n';
-            //ctrl.AccesEventPage(i);
+            ctrl.AccesEventPage(i);
 
             std::cout << "\nContinue(1), add to your list(2) or stop(0)? ";
             std::cin >> cont;
@@ -125,6 +125,8 @@ void UI::PrintByMonthUser()
                 if(i == ctrl.GetRepoSize() - 1)
                     i = -1;
             }
+            else
+                --i;
         }
     }
 }
@@ -209,6 +211,9 @@ void UI::UiAdmin()
                 PrintUIAdm();
             else
                 std::cout << "Invalid command!\n";
+
+            if(comm >=1 && comm <= 3)
+                ctrl.WriteInFile("events.txt");
         }
         catch(const RepoException &ex)
         {
@@ -226,8 +231,26 @@ void UI::UIUser()
     HelpUser();
     std::cout << '\n';
 
-    EventList *el = new EventListHTML;
-    el->SetFilename("EventList.html");
+    int format = 0;
+
+    while(format != 1 && format != 2)
+    {
+        std::cout << "Choose format: csv(1) or html(2)?\n";
+        std::cin >> format;
+    }
+
+    EventList *el = nullptr;
+    if(format == 1)
+    {
+        el = new EventListCSV;
+        el->SetFilename("EventList.csv");
+    }
+    else if(format == 2)
+    {
+        el = new EventListHTML;
+        el->SetFilename("EventList.html");
+    }
+
     ctrl.SetEventList(el);
 
     while(1)
@@ -236,20 +259,27 @@ void UI::UIUser()
         std::cout << ">>";
         std::cin >> comm;
 
-        if (comm == 0)
-            break;
-        else if(comm == 1)
-            PrintByMonthUser();
-        else if(comm == 2)
-            DeleteFromUserList();
-        else if(comm == 3)
-            SeeUserList();
-        else if(comm == 4)
-            SaveListToFile();
-        else if(comm == 5)
-            DisplayList();
-        else
-            std::cout << "Invalid command!";
+        try
+        {
+            if (comm == 0)
+                break;
+            else if(comm == 1)
+                PrintByMonthUser();
+            else if(comm == 2)
+                DeleteFromUserList();
+            else if(comm == 3)
+                SeeUserList();
+            else if(comm == 4)
+                SaveListToFile();
+            else if(comm == 5)
+                DisplayList();
+            else
+                std::cout << "Invalid command!";
+        }
+        catch(const RepoException &ex)
+        {
+            std::cout << ex.GetMsg() << '\n';
+        }
     }
 
     delete el;
@@ -264,7 +294,14 @@ void UI::ReadFromFile(std::string str)
     {
         while(fin >> e)
         {
-            ctrl.AddToRepo(e.GetTitle(), e.GetDesc(), e.GetDate(), e.GetNrPeople(), e.GetSource(), e.GetDuration());
+            try
+            {
+                ctrl.AddToRepo(e.GetTitle(), e.GetDesc(), e.GetDate(), e.GetNrPeople(), e.GetSource(), e.GetDuration());
+            }
+            catch(RepoException &ex)
+            {
+                std::cout << ex.GetMsg() << '\n';
+            }
         }
     }
 

@@ -1,6 +1,5 @@
 #include "eventlistHTML.hpp"
 #include <fstream>
-#include <Windows.h>
 
 void EventListHTML::WriteToFile()
 {
@@ -24,7 +23,17 @@ void EventListHTML::WriteToFile()
                 fout << "<td>Duration</td>";
             fout << "</th>";
 
-
+            for (auto &usr_event : usr_events)
+            {
+                fout << "<tr>";
+                    fout << "<td>" << usr_event.GetTitle() << "</td>";
+                    fout << "<td>" << usr_event.GetDesc() <<"</td>";
+                    fout << "<td>" << usr_event.GetDate() <<"</td>";
+                    fout << "<td>" << usr_event.GetNrPeople() <<"</td>";
+                    fout << "<td><a href='"<< usr_event.GetSource() << "' target='_blank'>link</a></td>";
+                    fout << "<td>" << usr_event.GetDuration() <<"</td>";
+                fout << "</tr>";
+            }
 
         fout << "</table>";
     fout << "</body>";
@@ -36,7 +45,11 @@ void EventListHTML::WriteToFile()
 
 void EventListHTML::Display()
 {
-    std::string aux = "\"" + filename + "\"";
+    std::string run_str = "firefox ";
+    run_str += "./" + filename;
+    const char *cmd = run_str.c_str();
+    FILE * fd = popen(cmd, "w");
+    fclose(fd);
 
-    ShellExecute(NULL, NULL, "chrome.exe", aux.c_str(), NULL, SW_SHOWMAXIMIZED);
+    //ShellExecute(NULL, NULL, "chrome.exe", aux.c_str(), NULL, SW_SHOWMAXIMIZED);
 }

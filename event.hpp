@@ -2,8 +2,6 @@
 #define LAB5_6_EVENT_HPP
 
 #include <iostream>
-#include <Windows.h>
-#include <shellapi.h>
 #include <sstream>
 #include <string>
 #include <vector>

@@ -1,4 +1,5 @@
-//#include <wsman.h>
+//#include <cstdlib>
+#include <unistd.h>
 #include "event.hpp"
 
 Event::Event() : title(""), description(""), date_time(""), nr_people(0), source("")
@@ -70,7 +71,7 @@ std::string Event::GetStr() const
     std::string str_nr_people = std::to_string(nr_people);
     std::string str_duration = std::to_string(duration);
 
-    std::string str_event = title + "; " + description + "; " + date_time + "; " + str_nr_people + "; " + source + "; " + str_duration;
+    std::string str_event = title + ", " + description + ", " + date_time + ", " + str_nr_people + ", " + source + ", " + str_duration;
     return str_event;
 }
 
@@ -81,7 +82,14 @@ int Event::operator ==(const Event &e) const
 
 void Event::AccesPage() const
 {
-    ShellExecuteA(nullptr, nullptr, "chrome.exe", GetSource().c_str(), nullptr, SW_SHOWMAXIMIZED);
+    //std::system("./chrome.sh");
+    //execl("/usr/bin/firefox", "google.com", (char *) NULL);
+
+    std::string run_str = "firefox ";
+    run_str += source;
+    const char * cmd = run_str.c_str();
+    FILE * fd = popen(cmd, "w");
+    fclose(fd);
 }
 
 int Event::GetMonth() const
@@ -124,7 +132,7 @@ std::vector<std::string> tokenize(std::string str, char delimiter)
 
 std::ostream &operator<<(std::ostream &os, const Event& e)
 {
-    os << e.title << "; " << e.description << "; " << e.date_time << "; " << e.nr_people << "; " << e.source << "; " << e.duration;
+    os << e.title << ", " << e.description << ", " << e.date_time << ", " << e.nr_people << ", " << e.source << ", " << e.duration;
     return os;
 }
 
