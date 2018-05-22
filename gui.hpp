@@ -30,6 +30,8 @@ public slots:
     void Add();
 
 private:
+    void InitList();
+
     Controller ctrl;
     QHBoxLayout *layout;
     QLabel *l;
