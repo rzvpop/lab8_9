@@ -1,43 +1,38 @@
 #include <iostream>
-#include "ui.hpp"
+//#include <QtWidgets/QApplication>
+//#include "ui.hpp"
+#include "gui.hpp"
 #include "test.cpp"
-#include <QtCore>
-#include <QApplication>
-#include <QWidget>
-#include <QtWidgets/QFormLayout>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QMessageBox>
-#include <QtWidgets/QListWidget>
-#include <QDebug>
 
-int ChooseModeGUI(int argc, char *argv[]);
+/*int ChooseModeGUI(int argc, char *argv[]);
 int AdminMenuGUI(int argc, char *argv[]);
 int AdminAddGUI(int argc, char *argv[]);
-int UserMenuGUI(int argc, char *argv[]);
+int GUI(int argc, char *argv[]);
+int UserMenuGUI(int argc, char *argv[]);*/
 
 int main(int argc, char* argv[])
 {
     //Tests t;
     //t.TestCtrl();
 
-    /*auto* repo = new Repository<Event>;
-    auto* ctrl = new Controller(*repo);
-    auto* ui = new UI(*ctrl);
+    QApplication app{argc, argv};
 
-    ui->StartUI();
+    auto* repo = new Repository<Event>;
+    auto* ctrl = new Controller(*repo);
+    GUIQt ui(*ctrl);
+
+    ui.show();
 
     delete repo;
     delete ctrl;
-    delete ui;*/
 
     //return ChooseModeGUI(argc, argv);
-    return AdminMenuGUI(argc, argv);
+    //return AdminMenuGUI(argc, argv);
     //return AdminAddGUI(argc, argv);
+    return QApplication::exec();
 }
 
-int ChooseModeGUI(int argc, char *argv[])
+/*int ChooseModeGUI(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     QWidget *main = new QWidget{};
@@ -45,6 +40,8 @@ int ChooseModeGUI(int argc, char *argv[])
     QLabel *label = new QLabel("Choose: ");
     QPushButton *adm_btn = new QPushButton("Admin");
     QPushButton *usr_btn = new QPushButton("User");
+
+    QSplashScreen spl;
 
     hl->addWidget(label);
     hl->addWidget(adm_btn);
@@ -109,5 +106,9 @@ int AdminAddGUI(int argc, char *argv[]) {
 
 int UserMenuGUI(int argc, char *argv[])
 {
+    QApplication a(argc, argv);
+    QWidget *main = new QWidget{};
 
-}
+
+    return a.exec();
+}*/
