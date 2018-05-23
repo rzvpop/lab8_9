@@ -80,7 +80,7 @@ void UI::UpdateUIAdm()
     std::string new_link;
     std::cin >> new_link;
 
-    ctrl.UpdateInRepo(title, new_desc, new_time, new_nr, new_link);
+    ctrl.UpdateInRepo(title, new_desc, new_time, new_nr, new_link, 0);
 
     //delete[] str;
 }

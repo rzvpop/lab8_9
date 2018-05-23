@@ -11,11 +11,11 @@ class Controller
 public:
     explicit Controller(Repository<Event>& _repo) : repo(_repo){}
 
-    Repository<Event> GetRepo();
+    Repository<Event> * GetRepo();
     int GetRepoSize();
     void AddToRepo(std::string, std::string, std::string, int, std::string, int); //adds in repo an Event initialized with thse parameters
     void RemoveFromRepo(std::string);
-    void UpdateInRepo(std::string, std::string, std::string, int, std::string);
+    void UpdateInRepo(std::string, std::string, std::string, int, std::string, int);
     std::string GetRepoElemOnPosStr(int);
     void AccesEventPage(int);
     int GetMonthOnPos(int);

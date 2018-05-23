@@ -4,12 +4,6 @@
 #include "gui.hpp"
 #include "test.cpp"
 
-/*int ChooseModeGUI(int argc, char *argv[]);
-int AdminMenuGUI(int argc, char *argv[]);
-int AdminAddGUI(int argc, char *argv[]);
-int GUI(int argc, char *argv[]);
-int UserMenuGUI(int argc, char *argv[]);*/
-
 int main(int argc, char* argv[])
 {
     //Tests t;
@@ -26,9 +20,6 @@ int main(int argc, char* argv[])
     delete repo;
     delete ctrl;
 
-    //return ChooseModeGUI(argc, argv);
-    //return AdminMenuGUI(argc, argv);
-    //return AdminAddGUI(argc, argv);
     return QApplication::exec();
 }
 

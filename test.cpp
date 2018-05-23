@@ -13,7 +13,7 @@ public:
         ctrl.AddToRepo("1", "", "", 0, "", 0);
         ctrl.AddToRepo("Concert Parazitii Euphoria", "", "", 0, "", 0);
         ctrl.AddToRepo("2", "", "", 0, "", 0);
-        ctrl.UpdateInRepo("Concert Parazitii Euphoria", "", "", 777, "https://www.facebook.com/events/164052010849321/");
+        ctrl.UpdateInRepo("Concert Parazitii Euphoria", "", "", 777, "https://www.facebook.com/events/164052010849321/", 0);
         ctrl.RemoveFromRepo("2");
 
         assert(ctrl.GetRepoSize() == 2);

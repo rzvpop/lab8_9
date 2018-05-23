@@ -1,9 +1,9 @@
 #include "controller.hpp"
 #include <fstream>
 
-Repository<Event> Controller::GetRepo()
+Repository<Event> * Controller::GetRepo()
 {
-    return repo;
+    return &repo;
 }
 
 void Controller::AddToRepo(std::string _title, std::string _desc, std::string _dt, int _nrp, std::string _source, int _duration)
@@ -20,9 +20,9 @@ void Controller::RemoveFromRepo(std::string title)
     repo.Remove(Event(std::move(title), "", "", 0, ""));
 }
 
-void Controller::UpdateInRepo(std::string title, std::string new_desc, std::string new_dt, int new_nrp,std::string new_source)
+void Controller::UpdateInRepo(std::string title, std::string new_desc, std::string new_dt, int new_nrp,std::string new_source, int duration)
 {
-    repo.Replace(Event(std::move(title), std::move(new_desc), std::move(new_dt), new_nrp, std::move(new_source)));
+    repo.Replace(Event(std::move(title), std::move(new_desc), std::move(new_dt), new_nrp, std::move(new_source), duration));
 }
 
 std::string Controller::GetRepoElemOnPosStr(int i)
@@ -38,7 +38,8 @@ int Controller::GetRepoSize()
 
 void Controller::AccesEventPage(int i)
 {
-    const auto e = repo.GetEventOnPos(i);
+    //const
+    auto e = repo.GetEventOnPos(i);
 
     e->AccesPage();
 }
