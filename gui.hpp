@@ -39,6 +39,7 @@ public slots:
     void Add();
     void Delete();
     void Update();
+    void Filter();
 
     void AddToPlaylist();
     void Play();
@@ -62,6 +63,9 @@ private:
     QPushButton *delete_btn;
     QPushButton *update_btn;
     QListWidget *list;
+    QVBoxLayout *filter_layout;
+    QLineEdit *filter_edit;
+    //QPushButton *filter_btn;
 
     QDialog *add_window;
     QVBoxLayout *add_layout;

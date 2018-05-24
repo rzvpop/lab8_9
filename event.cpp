@@ -86,7 +86,6 @@ void Event::AccesPage() const
     //execl("/usr/bin/firefox", "google.com", (char *) NULL);
 
     std::string run_str = "firefox ";
-    std::cout << source << '\n';
     run_str += source;
     const char * cmd = run_str.c_str();
     FILE * fd = popen(cmd, "w");
