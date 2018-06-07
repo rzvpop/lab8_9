@@ -13,6 +13,8 @@ public:
     UndoAction& operator=(const UndoAction&) = delete;
 
     virtual void ExecuteUndo() = 0;
+    virtual Event GetEvent() const = 0;
+    virtual std::string GetType() const = 0;
     // virtual destructor!
     virtual ~UndoAction() = default;
 };
@@ -32,6 +34,16 @@ public:
     {
         this->repo.Remove(added_event);
     }
+
+    Event GetEvent() const override
+    {
+        return added_event;
+    }
+
+    std::string GetType() const override
+    {
+        return "add_undo";
+    }
 };
 
 class UndoRemove : public UndoAction
@@ -49,6 +61,16 @@ public:
     {
         this->repo.Add(deleted_event);
     }
+
+    Event GetEvent() const override
+    {
+        return deleted_event;
+    }
+
+    std::string GetType() const override
+    {
+        return "delete_undo";
+    }
 };
 
 class UndoUpdate : public UndoAction
@@ -65,5 +87,15 @@ public:
     void ExecuteUndo() override
     {
         this->repo.Replace(old_event);
+    }
+
+    Event GetEvent() const override
+    {
+        return old_event;
+    }
+
+    std::string GetType() const override
+    {
+        return "update_undo";
     }
 };

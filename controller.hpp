@@ -29,12 +29,14 @@ public:
     void SaveListToFile();
     void DisplayList();
     void undo();
+    void redo();
 
 private:
     Repository<Event> repo;
     Repository<Event> user_list;
     EventList* el{};
     std::vector<std::shared_ptr<UndoAction>> undos; //ca mai copiez constructoru once in a while(referinta in ui/gui)
+    std::vector<std::shared_ptr<UndoAction>> redos;
 };
 
 #endif //LAB5_6_CONTROLLER_HPP

@@ -9,13 +9,14 @@ Repository<Event> * Controller::GetRepo()
 
 void Controller::AddToRepo(std::string _title, std::string _desc, std::string _dt, int _nrp, std::string _source, int _duration)
 {
-
     Event e(std::move(_title), std::move(_desc), std::move(_dt), _nrp, std::move(_source), _duration);
 
     repo.Add(e);
     repo.Sort();
 
     undos.push_back(std::make_shared<UndoAdd>(repo, e));
+    if(!redos.empty())
+        redos.clear();
 }
 
 void Controller::RemoveFromRepo(std::string title)
@@ -24,14 +25,19 @@ void Controller::RemoveFromRepo(std::string title)
     repo.Remove(e);
 
     undos.push_back(std::make_shared<UndoRemove>(repo, e));
+    if(!redos.empty())
+        redos.clear();
 }
 
 void Controller::UpdateInRepo(std::string title, std::string new_desc, std::string new_dt, int new_nrp,std::string new_source, int duration)
 {
+    Event old_e = *repo.GetEventOnPos(repo.Find(Event(title, "", "", 0, "", 0)));
+    undos.push_back(std::make_shared<UndoUpdate>(repo, old_e));
+    if(!redos.empty())
+        redos.clear();
+
     Event e(std::move(title), std::move(new_desc), std::move(new_dt), new_nrp, std::move(new_source), duration);
     repo.Replace(e);
-
-    undos.push_back(std::make_shared<UndoUpdate>(repo, e));
 }
 
 std::string Controller::GetRepoElemOnPosStr(int i)
@@ -126,5 +132,49 @@ void Controller::undo()
         throw RepoException{"No actions to undo."};
     }
 
+    std::string type = undos.back()->GetType();
+    Event e = undos.back()->GetEvent();
+
+    if(type == "add_undo")
+    {
+        redos.push_back(std::make_shared<UndoRemove>(repo, e));
+    }
+    else if(type == "delete_undo")
+    {
+        redos.push_back(std::make_shared<UndoAdd>(repo, e));
+    }
+    else
+    {
+        redos.push_back(std::make_shared<UndoUpdate>(repo, e));
+    }
+
     undos.back()->ExecuteUndo();
+    undos.pop_back();
+}
+
+void Controller::redo()
+{
+    if(redos.empty())
+    {
+        throw RepoException{"No actions to redo."};
+    }
+
+    std::string type = redos.back()->GetType();
+    Event e = redos.back()->GetEvent();
+
+    if(type == "add_undo")
+    {
+        undos.push_back(std::make_shared<UndoRemove>(repo, e));
+    }
+    else if(type == "delete_undo")
+    {
+        undos.push_back(std::make_shared<UndoAdd>(repo, e));
+    }
+    else
+    {
+        undos.push_back(std::make_shared<UndoUpdate>(repo, e));
+    }
+
+    redos.back()->ExecuteUndo();
+    redos.pop_back();
 }

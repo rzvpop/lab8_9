@@ -44,8 +44,12 @@ public slots:
     void AddToPlaylist();
     void Play();
 
+    void Undo();
+    void Redo();
+
 private:
     void InitList();
+    void Populate();
 
     int mode;
     Controller ctrl;

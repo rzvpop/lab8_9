@@ -2,7 +2,7 @@
 
 GUIQt::GUIQt(const Controller &_ctrl) : ctrl(_ctrl)
 {
-    mode = 1;
+    mode = 2;
 
     ChooseModeGUI();
 
@@ -15,6 +15,8 @@ GUIQt::GUIQt(const Controller &_ctrl) : ctrl(_ctrl)
         connect(delete_btn, SIGNAL(clicked()), this, SLOT(Delete()));
         connect(update_btn, SIGNAL(clicked()), this, SLOT(UpdateWindowAdmin()));
         connect(filter_edit, SIGNAL(textChanged(const QString&)), this, SLOT(Filter()));
+        connect(undo_button, SIGNAL(clicked()), this, SLOT(Undo()));
+        connect(redo_button, SIGNAL(clicked()), this, SLOT(Redo()));
     }
     else if(mode == 2)
     {
@@ -50,6 +52,8 @@ void GUIQt::InitAdminGUI()
     undo_layout = new QHBoxLayout;
     undo_button = new QPushButton("Undo");
     redo_button = new QPushButton("Redo");
+
+    redo_button->setEnabled(false);
 
     filter_edit->setPlaceholderText("Text to match..");
 
@@ -112,6 +116,8 @@ void GUIQt::AddWindowAdmin()
 
 void GUIQt::Add()
 {
+    undo_button->setEnabled(true);
+
     std::string title(title_edit->text().toStdString());
     std::string descr(descr_edit->text().toStdString());
     std::string date_time(date_time_edit->text().toStdString());
@@ -130,7 +136,11 @@ void GUIQt::Add()
 void GUIQt::InitList()
 {
     ReadFromFile("events.txt");
+    Populate();
+}
 
+void GUIQt::Populate()
+{
     std::vector<Event> v = ctrl.GetRepo()->GetVector();
 
     for(auto &it : v)
@@ -139,6 +149,7 @@ void GUIQt::InitList()
         new QListWidgetItem(QString(e_str.c_str()), list);
     }
 }
+
 
 void GUIQt::ReadFromFile(std::string str)
 {
@@ -165,6 +176,7 @@ void GUIQt::ReadFromFile(std::string str)
 
 void GUIQt::Delete()
 {
+    undo_button->setEnabled(true);
 
     QListWidgetItem *item = list->currentItem();
     if(item != nullptr)
@@ -219,6 +231,8 @@ void GUIQt::UpdateWindowAdmin()
 
 void GUIQt::Update()
 {
+    undo_button->setEnabled(true);
+
     std::string title(title_edit->text().toStdString());
     std::string descr(descr_edit->text().toStdString());
     std::string date_time(date_time_edit->text().toStdString());
@@ -350,4 +364,40 @@ void GUIQt::Filter()
         if(e_str_copy.find(filter_text) != -1)
             new QListWidgetItem(QString(e_str.c_str()), list);
     }
+}
+
+void GUIQt::Undo()
+{
+    try
+    {
+        ctrl.undo();
+        redo_button->setEnabled(true);
+    }
+    catch(RepoException &ex)
+    {
+        std::cout << ex.GetMsg() << '\n';
+        undo_button->setEnabled(false);
+    }
+
+    ctrl.WriteInFile("events.txt");
+    list->clear();
+    Populate();
+}
+
+void GUIQt::Redo()
+{
+    try
+    {
+        ctrl.redo();
+        undo_button->setEnabled(true);
+    }
+    catch(RepoException &ex)
+    {
+        std::cout << ex.GetMsg() << '\n';
+        redo_button->setEnabled(false);
+    }
+
+    ctrl.WriteInFile("events.txt");
+    list->clear();
+    Populate();
 }

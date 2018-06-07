@@ -50,7 +50,7 @@ void Repository<T>::Replace(const T& e)
 {
     auto it = std::find(elems.begin(), elems.end(), e);
 
-    if(it!= elems.end())
+    if(it != elems.end())
     {
         *it= e;
     }
