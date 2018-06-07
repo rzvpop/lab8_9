@@ -65,7 +65,6 @@ private:
     QListWidget *list;
     QVBoxLayout *filter_layout;
     QLineEdit *filter_edit;
-    //QPushButton *filter_btn;
 
     QDialog *add_window;
     QVBoxLayout *add_layout;
@@ -81,6 +80,10 @@ private:
     QListWidget *playlist;
     QPushButton *play;
     QVBoxLayout *playlist_layout;
+
+    QHBoxLayout *undo_layout;
+    QPushButton *undo_button;
+    QPushButton *redo_button;
 };
 
 #endif //LAB8_9_GUI_H

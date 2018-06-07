@@ -3,7 +3,7 @@
 template<typename T>
 void Repository<T>::Add(const T& e)
 {
-    typename std::vector<T>::iterator it = std::find(elems.begin(), elems.end(), e);
+    auto it = std::find(elems.begin(), elems.end(), e);
 
     if(it == elems.end())
         elems.push_back(e);
@@ -14,7 +14,7 @@ void Repository<T>::Add(const T& e)
 template<typename T>
 void Repository<T>::Remove(const T& e)
 {
-    typename std::vector<T>::iterator it = std::find(elems.begin(), elems.end(), e);
+    auto it = std::find(elems.begin(), elems.end(), e);
 
     if(it != elems.end())
         elems.erase(it);
@@ -25,7 +25,7 @@ void Repository<T>::Remove(const T& e)
 template<typename T>
 int Repository<T>::Find(const T& e) const
 {
-    typename std::vector<T>::const_iterator it = std::find(elems.begin(), elems.end(), e);
+    auto it = std::find(elems.begin(), elems.end(), e);
 
     if(it != elems.end())
         return static_cast<int>(it - elems.begin());
@@ -48,7 +48,7 @@ std::vector<T>& Repository<T>::GetVector()
 template<typename T>
 void Repository<T>::Replace(const T& e)
 {
-    typename std::vector<T>::iterator it = std::find(elems.begin(), elems.end(), e);
+    auto it = std::find(elems.begin(), elems.end(), e);
 
     if(it!= elems.end())
     {

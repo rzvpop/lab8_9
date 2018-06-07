@@ -47,7 +47,9 @@ void GUIQt::InitAdminGUI()
     l = new QLabel("Options:");
     filter_layout = new QVBoxLayout;
     filter_edit = new QLineEdit;
-    //filter_btn = new QPushButton("Filter");
+    undo_layout = new QHBoxLayout;
+    undo_button = new QPushButton("Undo");
+    redo_button = new QPushButton("Redo");
 
     filter_edit->setPlaceholderText("Text to match..");
 
@@ -56,8 +58,12 @@ void GUIQt::InitAdminGUI()
     adm_options->addWidget(delete_btn);
     adm_options->addWidget(update_btn);
 
+    undo_layout->addWidget(undo_button);
+    undo_layout->addWidget(redo_button);
+
+    filter_layout->addLayout(undo_layout);
     filter_layout->addWidget(filter_edit);
-    //filter_layout->addWidget(filter_btn);
+
 
     layout->addLayout(adm_options);
     layout->addWidget(list);

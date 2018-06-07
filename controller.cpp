@@ -1,5 +1,6 @@
 #include "controller.hpp"
 #include <fstream>
+#include <algorithm>
 
 Repository<Event> * Controller::GetRepo()
 {
@@ -13,16 +14,24 @@ void Controller::AddToRepo(std::string _title, std::string _desc, std::string _d
 
     repo.Add(e);
     repo.Sort();
+
+    undos.push_back(std::make_shared<UndoAdd>(repo, e));
 }
 
 void Controller::RemoveFromRepo(std::string title)
 {
-    repo.Remove(Event(std::move(title), "", "", 0, ""));
+    Event e(std::move(title), "", "", 0, "");
+    repo.Remove(e);
+
+    undos.push_back(std::make_shared<UndoRemove>(repo, e));
 }
 
 void Controller::UpdateInRepo(std::string title, std::string new_desc, std::string new_dt, int new_nrp,std::string new_source, int duration)
 {
-    repo.Replace(Event(std::move(title), std::move(new_desc), std::move(new_dt), new_nrp, std::move(new_source), duration));
+    Event e(std::move(title), std::move(new_desc), std::move(new_dt), new_nrp, std::move(new_source), duration);
+    repo.Replace(e);
+
+    undos.push_back(std::make_shared<UndoUpdate>(repo, e));
 }
 
 std::string Controller::GetRepoElemOnPosStr(int i)
@@ -104,10 +113,18 @@ void Controller::WriteInFile(std::string str)
 {
     std::ofstream fout(str);
 
-    //std::vector<Event> v = static_cast<std::vector<Event> &&>(repo.GetVector());
-
     for(int i = 0; i < repo.GetNrElems(); ++i)
         fout << repo.GetStrOnPos(i) << '\n';
 
     fout.close();
+}
+
+void Controller::undo()
+{
+    if(undos.empty())
+    {
+        throw RepoException{"No actions to undo."};
+    }
+
+    undos.back()->ExecuteUndo();
 }

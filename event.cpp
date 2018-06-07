@@ -1,4 +1,3 @@
-//#include <cstdlib>
 #include <unistd.h>
 #include "event.hpp"
 
@@ -119,13 +118,21 @@ void Event::SetDuration(int _duration)
     duration = _duration;
 }
 
-std::vector<std::string> tokenize(std::string str, char delimiter)
+std::vector<std::string> tokenize(const std::string &str, char delimiter, bool strip_spaces = false)
 {
     std::vector <std::string> result;
     std::stringstream ss(str);
     std::string token;
     while(getline(ss, token, delimiter))
+    {
+        while(token.back() == ' ')
+            token.pop_back();
+
+        while(token.front() == ' ')
+            token.erase(token.begin());
+
         result.push_back(token);
+    }
 
     return result;
 }
@@ -141,7 +148,7 @@ std::istream &operator>>(std::istream &is, Event &e)
     std::string line;
     std::getline(is, line);
 
-    std::vector<std::string> tokens = tokenize(line, ',');
+    std::vector<std::string> tokens = tokenize(line, ',', true);
 
     if( tokens.size() == 6)
     {

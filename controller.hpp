@@ -1,10 +1,10 @@
 #ifndef LAB5_6_CONTROLLER_HPP
 #define LAB5_6_CONTROLLER_HPP
 
-#include "repository.hpp"
-#include "event.hpp"
 #include "eventlistCSV.hpp"
 #include "eventlistHTML.hpp"
+#include "undo.hpp"
+#include <memory>
 
 class Controller
 {
@@ -28,11 +28,13 @@ public:
     void SetEventList(EventList*);
     void SaveListToFile();
     void DisplayList();
+    void undo();
 
 private:
     Repository<Event> repo;
     Repository<Event> user_list;
-    EventList* el;
+    EventList* el{};
+    std::vector<std::shared_ptr<UndoAction>> undos; //ca mai copiez constructoru once in a while(referinta in ui/gui)
 };
 
 #endif //LAB5_6_CONTROLLER_HPP
